@@ -84,7 +84,8 @@ DATABASES = {
         'NAME': 'treebo_hotels',
         'USER': 'administrator',
         'PASSWORD': 'administrator',
-        'HOST': 'dnow-tst.c562jxh8kc1b.us-west-2.rds.amazonaws.com',   
+        # 'HOST': 'dnow-tst.c562jxh8kc1b.us-west-2.rds.amazonaws.com', 
+        'HOST': 'treebos.cqflua7bbbyc.us-west-2.rds.amazonaws.com',    
         'PORT': '3306',
     }
 }
