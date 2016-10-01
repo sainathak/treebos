@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" ng-app="mainApp" ng-csp>
+<head>
+	<title>Treebos</title>
+    <link rel="stylesheet" href="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css" type='text/css'>
+    <link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
+</head>
+<body ng-controller="mainController" class="home">
+    <div class="base" ng-controller="baseController">
+        <div class="mainContent" ng-view>
+        </div>        
+    </div>
+</body>
+{% include "scripts.html" %}
+</html>

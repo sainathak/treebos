@@ -1,0 +1,63 @@
+<!-- Navigation -->
+        <div class="title-bar" data-responsive-toggle="realEstateMenu" data-hide-for="small">
+            <img src="static/images/treebo.jpg" />
+          <div class="title-bar-title">Treebos - Deals to Stay for</div>
+        </div>
+        <!-- /Navigation -->
+
+        <br>
+
+        <div class="row small-up-1 medium-up-2 large-up-3">
+          <div class="column">
+            <div class="callout" style="background-color:#ebebeb;">
+              <p><input type="text" ng-model="query"/></p>
+              <p ng-click="onQuery()" style="cursor:pointer;">Click Here to Search</p>
+              <p>Sort By</p>
+              <p><label><input type="radio" ng-model="sortBy" ng-change="onSort()" value="rating">Rating</label></p>
+              <p><label><input type="radio" ng-model="sortBy" ng-change="onSort()" value="price">Price</label></p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="callout" style="background-color:#ebebeb;">
+              <p>API Hits        -  {[stats.api_hits]}</p>
+              <p>Average Rating  -  {[stats.average_rating]}</p>
+              <p>Maximum Price   -  {[stats.price.Maximum]}</p>
+              <p>Minimum Price   -  {[stats.price.Minimum]}</p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="callout" style="background-color:#ebebeb;">
+              <p>Area Distribution</p>
+              <p ng-repeat="(location,count) in stats.area_wise_hotel_distribution">{[location]}  -  {[count]}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row column">
+          <hr>
+        </div>
+
+        <div class="row column">
+          <p class="lead">Hotels</p>
+        </div>
+
+        <div class="row small-up-1 medium-up-2 large-up-3">
+          <div class="column" ng-repeat="hotel in hotels">
+            <div class="callout">
+              <p>Rating - {[hotel.rating]}</p>
+              <p><img ng-src="{[hotel.image]}"></p>
+              <p class="lead">{[hotel.name]}</p>
+              <p class="subheader">{[hotel.location]}</p>
+              <p>Actual Price - {[hotel.actual_price]}</p>
+              <p>Discount - {[hotel.discount]}%</p>
+              <p>Treebo Price - {[hotel.price]}</p>
+            </div>
+          </div>         
+
+        </div>
+
+        <div class="row column">
+          <div ng-click="showMore()" class="button hollow expanded">Load More</div>
+        </div>
+
+        
