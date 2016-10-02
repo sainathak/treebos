@@ -40,13 +40,22 @@ mainApp.controller('homeController',['$scope','Constants','$location','growl','$
 
             $http(options1).success(function(data){
                 $scope.stats = data;
+                if(($scope.page * 6) <= $scope.stats.total_count){
+                    $scope.my.showMore = true
+                }
+                else{
+                    $scope.my.showMore = false
+                }
+                $scope.$apply()
             }).error(function(data){
                 console.log(data);
             });   
         }
-        $scope.statChange()     
+        $scope.statChange()  
+        $scope.my = {showMore: false}  
 
         $scope.hotels = []
+        localStorage.setItem("likes",JSON.stringify({}))
 
         $scope.page = 1
         $scope.sortBy = "rating"
@@ -60,8 +69,26 @@ mainApp.controller('homeController',['$scope','Constants','$location','growl','$
                 'url': url
             };
             $http(options2).success(function(data){
+                likes = JSON.parse(localStorage.getItem("likes"))
                 for(var i=0; i<data.length; i++){
+                    if(data[i]["id"] in likes){
+                        data[i]["likes"] = likes[data[i]["id"]]
+                    }
+                    else{
+                        data[i]["likes"] = 0
+                        likes[parseInt(data[i]["id"])] = 0
+                    }
                     $scope.hotels.push(data[i])
+                }
+                localStorage.setItem("likes",JSON.stringify(likes))
+                if($scope.stats !== undefined){
+                    if(($scope.page * 6) <= $scope.stats.total_count){
+                        $scope.my.showMore = true
+                    }
+                    else{
+                        $scope.my.showMore = false
+                    }
+                    $scope.$apply()
                 }
             }).error(function(data){
                 console.log(data);
@@ -82,11 +109,42 @@ mainApp.controller('homeController',['$scope','Constants','$location','growl','$
             $scope.statChange()
         }
         
-        $scope.onSort = function(){
+        $scope.onSort = function(value){
+            if(value != "likes"){
+                $scope.hotels = []
+                $scope.page = 1
+                $scope.getList()
+                $scope.statChange()
+            }
+            else{
+                function compare(a,b) {
+                  if (a.likes < b.likes)
+                    return 1;
+                  if (a.likes > b.likes)
+                    return -1;
+                  return 0;
+                }
+                $scope.hotels.sort(compare);
+            }
+        }
+        
+        $scope.onArea = function(location){
+            $scope.query = location
             $scope.hotels = []
             $scope.page = 1
             $scope.getList()
             $scope.statChange()
+        }
+        
+        $scope.onLike = function(id,index){
+            id = parseInt(id)
+            index = parseInt(index)
+            console.log(id)
+            console.log(index)
+            $scope.hotels[index]["likes"] = $scope.hotels[index]["likes"]+1
+            likes = JSON.parse(localStorage.getItem("likes"))
+            likes[id] = likes[id]+1
+            localStorage.setItem("likes",JSON.stringify(likes))
         }
 }]);     
 

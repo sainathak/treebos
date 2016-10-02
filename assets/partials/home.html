@@ -1,63 +1,184 @@
 <!-- Navigation -->
-        <div class="title-bar" data-responsive-toggle="realEstateMenu" data-hide-for="small">
-            <img src="static/images/treebo.jpg" />
-          <div class="title-bar-title">Treebos - Deals to Stay for</div>
-        </div>
-        <!-- /Navigation -->
-
-        <br>
-
-        <div class="row small-up-1 medium-up-2 large-up-3">
-          <div class="column">
-            <div class="callout" style="background-color:#ebebeb;">
-              <p><input type="text" ng-model="query"/></p>
-              <p ng-click="onQuery()" style="cursor:pointer;">Click Here to Search</p>
-              <p>Sort By</p>
-              <p><label><input type="radio" ng-model="sortBy" ng-change="onSort()" value="rating">Rating</label></p>
-              <p><label><input type="radio" ng-model="sortBy" ng-change="onSort()" value="price">Price</label></p>
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <a class="navbar-brand">Treebos - Deals to Stay for</a>
             </div>
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div class="main" ng-controller="homeController" ng-init="my.showMore=false">
+      <!-- Header -->
+      <header>
+          <div class="container">
+              <div class="row">
+                <div class="col-md-7">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Statistics</div>
+                    <div class="panel-body">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="well well-lg">
+                              <span class="trstats">API Hits - {[stats.api_hits]}</span>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="well well-lg">
+                              <span class="trstats">Average Rating - {[stats.average_rating]}</span>
+                            </div>
+                          </div>
+                        </div>  
+                        <div class="row">
+                          <div class="col-md-12">
+                              <span class="glyphicon glyphicon-resize-horizontal"></span>
+                              <label class="pstats">Min. {[stats.price.Minimum]} Rs.</label>
+                              <button type="button" class="btn btn-default btn-lg">
+                                <span class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span> 
+                              </button>
+                              <label class="pstats">Max. {[stats.price.Maximum]} Rs.</label>
+                          </div>
+                        </div>
+                        <div class="row">                          
+                          <span ng-click="onArea(location)" style="cursor:pointer;" class="arstats" ng-repeat="(location,count) in stats.area_wise_hotel_distribution">
+                            {[location]} - {[count]}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">              
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Find your Treebo!</div>
+                    <div class="panel-body">
+                      <div class="container-fluid">
+                        <div class="row" style="padding-top:15px;">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <div class="input-group">
+                                <input type="text" ng-model="query" class="form-control" placeholder="Search">
+                                <div ng-click="onQuery()" class="input-group-addon">
+                                    <span style="cursor:pointer;" class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>  
+                        <div class="row" style="padding-top:15px;">
+                          <div class="col-md-12">
+                            <span class="arstats" style="font-size:12px;">SortBy</span>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="radio">
+                              <label>
+                                <input type="radio" ng-model="sortBy" ng-change="onSort('rating')" name="optionsRadios" id="optionsRadios1" value="rating" checked>
+                                <span class="arstats" style="font-size:10px;">Rating</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="radio">
+                              <label>
+                                <input type="radio" ng-model="sortBy" ng-change="onSort('price')" name="optionsRadios" id="optionsRadios2" value="price">
+                                <span class="arstats" style="font-size:10px;">Price</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="radio disabled">
+                              <label>
+                                <input type="radio" ng-model="sortBy" ng-change="onSort('likes')" name="optionsRadios" id="optionsRadios3" value="likes">
+                                <span class="arstats" style="font-size:10px;">Likes</span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
           </div>
-          <div class="column">
-            <div class="callout" style="background-color:#ebebeb;">
-              <p>API Hits        -  {[stats.api_hits]}</p>
-              <p>Average Rating  -  {[stats.average_rating]}</p>
-              <p>Maximum Price   -  {[stats.price.Maximum]}</p>
-              <p>Minimum Price   -  {[stats.price.Minimum]}</p>
-            </div>
+      </header>
+
+      <!-- Portfolio Grid Section -->
+      <section id="portfolio">
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-12 text-center">
+                      <h2>Hotels</h2>
+                      <hr class="star-primary">
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-4 portfolio-item" ng-repeat="hotel in hotels">
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <div class="container-fluid">
+                            <div class="row">
+                              <div class="col-md-12">
+                                {[hotel.name]}
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                Rating - {[hotel.rating]}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel-body" style="padding:0px;">
+                          <div class="container-fluid">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <a ng-href="{[hotel.link]}" class="portfolio-link">
+                                  <img ng-src="{[hotel.image]}" style="width:100%;height:100%;padding:0px;" alt="">
+                                </a> 
+                              </div>
+                            </div>  
+                          </div>
+                        </div>
+                        <div class="panel-footer">
+                          <div class="container-fluid">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <span class="ar2stats" style="font-size:8px;">{[hotel.location]}</span>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <span class="ar2stats" style="font-size:10px;">Actual Price - {[hotel.actual_price]} Rs.</span>
+                              </div>
+                              <div class="col-md-6">
+                                <span class="ar2stats" style="font-size:10px;">Discount - {[hotel.discount]}%</span>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <span class="ar2stats" style="font-size:10px;">Treebo Price - {[hotel.price]} Rs.</span>
+                              </div>
+                              <div class="col-md-6">
+                                <span ng-click="onLike(hotel.id,$index)" style="font-size:10px;cursor:pointer;" class="glyphicon glyphicon-thumbs-up" aria-hidden="true"> - {[hotel.likes]}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>                  
+              </div>              
+              <div class="row">
+                <div class="col-md-12 text-center">
+                  <div class="btn-group" role="group">
+                    <button style="cursor:pointer;"  ng-show="my.showMore" ng-click="showMore()" type="button" class="btn btn-primary">Show More</button>
+                  </div>
+                </div>
+              </div>
           </div>
-          <div class="column">
-            <div class="callout" style="background-color:#ebebeb;">
-              <p>Area Distribution</p>
-              <p ng-repeat="(location,count) in stats.area_wise_hotel_distribution">{[location]}  -  {[count]}</p>
-            </div>
-          </div>
-        </div>
+      </section>
+    </div>
 
-        <div class="row column">
-          <hr>
-        </div>
-
-        <div class="row column">
-          <p class="lead">Hotels</p>
-        </div>
-
-        <div class="row small-up-1 medium-up-2 large-up-3">
-          <div class="column" ng-repeat="hotel in hotels">
-            <div class="callout">
-              <p>Rating - {[hotel.rating]}</p>
-              <p><img ng-src="{[hotel.image]}"></p>
-              <p class="lead">{[hotel.name]}</p>
-              <p class="subheader">{[hotel.location]}</p>
-              <p>Actual Price - {[hotel.actual_price]}</p>
-              <p>Discount - {[hotel.discount]}%</p>
-              <p>Treebo Price - {[hotel.price]}</p>
-            </div>
-          </div>         
-
-        </div>
-
-        <div class="row column">
-          <div ng-click="showMore()" class="button hollow expanded">Load More</div>
-        </div>
-
-        
+    

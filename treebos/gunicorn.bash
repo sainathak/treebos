@@ -8,5 +8,5 @@ PORT=8000
 echo "Starting Django Server"
 source /home/ubuntu/dev/bin/activate
 cd $DJANGODIR
-python manage.py runserver
+python manage.py runserver $ADDRESS:$PORT
 echo "Django Server running on $ADDRESS:$PORT"
